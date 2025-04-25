@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Ketch Consent Example</title>
 
-  <!-- Your existing Ketch tag (v2) -->
+  <!-- Your Ketch boot script (unchanged) -->
   <script>
     !function(){
       window.semaphore=window.semaphore||[];
@@ -19,9 +19,8 @@
     }();
   </script>
 
-  <!-- Your custom consent callback -->
+  <!-- Custom logic triggered after consent -->
   <script>
-    // Poll for the real Ketch object to become available
     function waitForKetch(callback) {
       const interval = setInterval(() => {
         if (typeof window.ketch === 'object' && typeof window.ketch.onConsent === 'function') {
@@ -34,36 +33,22 @@
     waitForKetch((ketch) => {
       ketch.onConsent((consent) => {
         if (consent?.purposes?.analytics === 'consented') {
-          console.log('User gave consent for analytics');
-
-          // Run your custom code
+          console.log('✅ User gave consent for analytics');
+          // Run your custom logic
           myCustomFunction();
         }
       });
     });
 
-    // Example custom function
     function myCustomFunction() {
-      console.log('Running custom post-consent code...');
-      // Example: Load Google Analytics
-      loadAnalytics();
-    }
-
-    function loadAnalytics() {
-      const script = document.createElement('script');
-      script.src = 'https://www.googletagmanager.com/gtag/js?id=YOUR_ANALYTICS_ID';
-      script.async = true;
-      script.onload = function () {
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'YOUR_ANALYTICS_ID');
-      };
-      document.head.appendChild(script);
+      console.log('🎉 Custom code executed after user consented!');
+      // 👉 Place your actual logic here
+      // e.g., show a feature, enable a script, start a timer, etc.
     }
   </script>
+
 </head>
 <body>
-  <h1>Welcome to Our Site! 2</h1>
+  <h1>Welcome! 3</h1>
 </body>
 </html>
