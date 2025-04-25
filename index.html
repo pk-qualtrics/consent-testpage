@@ -11,22 +11,23 @@ Welcome
 Version 4
 
 <script>
-  // Listen for consent events
-  ketch.on('consent', function(consent) {
+  // Define a callback to handle consent change
+  ketch.callbacks.onConsentChanged(function(consent) {
     if (consent.given) {
-      // Trigger your code here when the user accepts cookies
+      // User accepted consent, trigger your custom code here
       console.log('User accepted cookies!');
       
-      // Example: Execute custom code (e.g., load analytics)
+      // Trigger any custom code (e.g., load analytics)
       myCustomFunction();
     } else {
+      // User declined consent
       console.log('User declined cookies');
     }
   });
 
   // Your custom function to trigger after consent is given
   function myCustomFunction() {
-    // You can add any code you need to run here
+    // Your custom JavaScript code here
     alert('Custom code executed after consent!');
   }
 </script>
