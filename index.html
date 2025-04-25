@@ -11,25 +11,28 @@
   }();
 </script>
 
-<!-- Run Custom Code After Consent -->
+<!-- Register Consent Callback -->
 <script>
-  window.ketch('onConsentChanged', function(consent) {
-    if (consent.given) {
-      console.log('✅ User accepted cookies');
-      // 🔽 Your custom code after consent
-      runMyCustomCode();
-    } else {
-      console.log('🚫 User declined cookies');
+  window.semaphore = window.semaphore || [];
+  window.semaphore.push([
+    'onConsentChanged',
+    function (consent) {
+      if (consent.given) {
+        console.log('✅ User accepted cookies');
+        runMyCustomCode();
+      } else {
+        console.log('🚫 User declined cookies');
+      }
     }
-  });
+  ]);
 
   function runMyCustomCode() {
     console.log('🎉 Consent granted. Running custom logic...');
-    // Example: load Google Analytics, marketing scripts, etc.
+    // Your custom script here (e.g., analytics, pixel, etc.)
   }
 </script>
 
-<!-- Page content -->
+<!-- Page Content -->
 <body>
   Welcome<br>
   Version 8
