@@ -2,3 +2,24 @@
 
 Welcome
 Version 2
+
+<script>
+  // Listen for consent events
+  ketch.on('consent', function(consent) {
+    if (consent.given) {
+      // Trigger your code here when the user accepts cookies
+      console.log('User accepted cookies!');
+      
+      // Example: Execute custom code (e.g., load analytics)
+      myCustomFunction();
+    } else {
+      console.log('User declined cookies');
+    }
+  });
+
+  // Your custom function to trigger after consent is given
+  function myCustomFunction() {
+    // You can add any code you need to run here
+    alert('Custom code executed after consent!');
+  }
+</script>
