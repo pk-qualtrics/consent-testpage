@@ -1,39 +1,41 @@
-<!-- Ketch Smart Tag (V2) -->
+<!-- Load Ketch V2 Smart Tag -->
 <script>
   !function(){
-    window.semaphore = window.semaphore || [];
-    window.ketch = function(){ window.semaphore.push(arguments) };
-    var n = document.createElement("script");
-    n.type = "text/javascript";
-    n.src = "https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js";
-    n.defer = n.async = true;
-    document.getElementsByTagName("head")[0].appendChild(n);
+    window.ketchReady = new Promise((resolve) => {
+      window.semaphore = window.semaphore || [];
+      window.ketch = function() { window.semaphore.push(arguments); };
+      window.semaphore.push(['onReady', function(api) {
+        resolve(api);
+      }]);
+      var script = document.createElement("script");
+      script.src = "https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js";
+      script.defer = script.async = true;
+      document.head.appendChild(script);
+    });
   }();
 </script>
 
-<!-- Register Consent Callback -->
+<!-- Custom logic after consent -->
 <script>
-  window.semaphore = window.semaphore || [];
-  window.semaphore.push([
-    'onConsentChanged',
-    function (consent) {
+  window.ketchReady.then(function(api) {
+    api.events.on('consent:updated', function(consent) {
       if (consent.given) {
-        console.log('✅ User accepted cookies');
+        console.log('✅ Consent given');
         runMyCustomCode();
       } else {
-        console.log('🚫 User declined cookies');
+        console.log('🚫 Consent denied');
       }
-    }
-  ]);
+    });
+  });
 
   function runMyCustomCode() {
-    console.log('🎉 Consent granted. Running custom logic...');
-    // Your custom script here (e.g., analytics, pixel, etc.)
+    console.log("🎉 Running custom logic now...");
+    // Insert your scripts or trackers here
   }
 </script>
 
-<!-- Page Content -->
+<!-- Page content -->
 <body>
   Welcome<br>
-  Version 9
+  Version 10
 </body>
