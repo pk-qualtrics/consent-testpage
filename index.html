@@ -1,41 +1,45 @@
 <!-- Load Ketch V2 Smart Tag -->
 <script>
   !function(){
-    window.ketchReady = new Promise((resolve) => {
-      window.semaphore = window.semaphore || [];
-      window.ketch = function() { window.semaphore.push(arguments); };
-      window.semaphore.push(['onReady', function(api) {
-        resolve(api);
-      }]);
-      var script = document.createElement("script");
-      script.src = "https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js";
-      script.defer = script.async = true;
-      document.head.appendChild(script);
-    });
+    window.ketch = window.ketch || function() {
+      (window.ketch.q = window.ketch.q || []).push(arguments);
+    };
+    var script = document.createElement("script");
+    script.src = "https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js";
+    script.defer = script.async = true;
+    document.head.appendChild(script);
   }();
 </script>
 
-<!-- Custom logic after consent -->
+<!-- Register a consent:updated event listener -->
 <script>
-  window.ketchReady.then(function(api) {
-    api.events.on('consent:updated', function(consent) {
-      if (consent.given) {
-        console.log('✅ Consent given');
-        runMyCustomCode();
-      } else {
-        console.log('🚫 Consent denied');
-      }
-    });
-  });
+  // Wait for the real SDK to load and run the listener after a short delay
+  setTimeout(function() {
+    if (typeof window.ketch === 'object' && typeof ketch.events?.on === 'function') {
+      ketch.events.on('consent:updated', function(consent) {
+        if (consent.given) {
+          console.log('✅ Consent given');
+          runMyCustomCode();
+        } else {
+          console.log('🚫 Consent denied');
+        }
+      });
+    } else {
+      console.warn('⚠️ Ketch SDK not yet ready. Try increasing timeout.');
+    }
+  }, 1000); // You can increase this to 1500ms or 2000ms if needed
+</script>
 
+<!-- Your custom code -->
+<script>
   function runMyCustomCode() {
-    console.log("🎉 Running custom logic now...");
-    // Insert your scripts or trackers here
+    console.log('🎉 Running custom logic...');
+    // Example: add Google Analytics, marketing tags, etc.
   }
 </script>
 
 <!-- Page content -->
 <body>
   Welcome<br>
-  Version 10
+  Version 11
 </body>
