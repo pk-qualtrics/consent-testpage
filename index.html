@@ -4,61 +4,66 @@
   <meta charset="UTF-8">
   <title>Ketch Consent Example</title>
 
-  <!-- Your Ketch Script Tag (unchanged) -->
+  <!-- Your existing Ketch tag (v2) -->
   <script>
     !function(){
-      window.semaphore=window.semaphore||[],window.ketch=function(){
+      window.semaphore=window.semaphore||[];
+      window.ketch=function(){
         window.semaphore.push(arguments)
       };
-      var e=new URLSearchParams(document.location.search),
-      n=document.createElement("script");
-      n.type="text/javascript", 
-      n.src="https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js", 
+      var n=document.createElement("script");
+      n.type="text/javascript",
+      n.src="https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js",
       n.defer=n.async=!0,
       document.getElementsByTagName("head")[0].appendChild(n)
     }();
   </script>
 
+  <!-- Your custom consent callback -->
   <script>
-    // Wait for Ketch to load and initialize
-    window.ketch.push(['onConsent', function(consent) {
-      // Example: Trigger custom code when user consents to specific purposes like analytics
-      if (consent.purposes && consent.purposes.analytics === 'consented') {
-        console.log('User consented to analytics!');
+    // Poll for the real Ketch object to become available
+    function waitForKetch(callback) {
+      const interval = setInterval(() => {
+        if (typeof window.ketch === 'object' && typeof window.ketch.onConsent === 'function') {
+          clearInterval(interval);
+          callback(window.ketch);
+        }
+      }, 100);
+    }
 
-        // 👉 Custom function you want to execute after consent
-        myCustomFunction();
-      }
-    }]);
+    waitForKetch((ketch) => {
+      ketch.onConsent((consent) => {
+        if (consent?.purposes?.analytics === 'consented') {
+          console.log('User gave consent for analytics');
 
-    // Custom function that runs after consent
+          // Run your custom code
+          myCustomFunction();
+        }
+      });
+    });
+
+    // Example custom function
     function myCustomFunction() {
-      // Example of custom actions after consent
-      console.log('Running custom code...');
-
-      // For instance, load your analytics, tracking, or marketing scripts
-      // Example: Load Google Analytics or another script
+      console.log('Running custom post-consent code...');
+      // Example: Load Google Analytics
       loadAnalytics();
     }
 
-    // Example of loading Google Analytics after consent
     function loadAnalytics() {
-      var script = document.createElement('script');
+      const script = document.createElement('script');
       script.src = 'https://www.googletagmanager.com/gtag/js?id=YOUR_ANALYTICS_ID';
       script.async = true;
-      script.onload = function() {
+      script.onload = function () {
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+        function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'YOUR_ANALYTICS_ID');
       };
       document.head.appendChild(script);
     }
   </script>
-
 </head>
 <body>
-  <h1>Welcome to Our Site!</h1>
-  Version 1.1
+  <h1>Welcome to Our Site! 2</h1>
 </body>
 </html>
