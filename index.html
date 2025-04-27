@@ -8,29 +8,42 @@
 <script>!function(){window.semaphore=window.semaphore||[],window.ketch=function(){window.semaphore.push(arguments)};var e=document.createElement("script");e.type="text/javascript",e.src="https://global.ketchcdn.com/web/v3/config/merkle/website_smart_tag/boot.js",e.defer=e.async=!0,document.getElementsByTagName("head")[0].appendChild(e)}();</script>
 
 <script>
-(function waitForKetchApi() {
-  console.log('Checking for ketchApi...');
+let checkAttempts = 0;
+const maxAttempts = 100; // 100 attempts × 100ms = 10 seconds
+
+function waitForKetchApi() {
+  console.log('Checking for ketchApi... Attempt:', checkAttempts);
 
   if (window.ketchApi && window.ketchApi.consents) {
     console.log('ketchApi is ready', window.ketchApi.consents);
-
-    const consents = window.ketchApi.consents;
-    if (consents?.purposes['essential']?.status === 'granted') {
-      console.log('Essential consent granted');
-      loadCustomFunction();
-    } else {
-      console.log('Essential consent NOT granted');
-    }
+    handleConsent();
+  } else if (checkAttempts < maxAttempts) {
+    checkAttempts++;
+    setTimeout(waitForKetchApi, 100);
   } else {
-    setTimeout(waitForKetchApi, 100); // Check again after 100ms
+    console.warn('Ketch API not available after 10 seconds. Giving up.');
   }
-})();
+}
+
+function handleConsent() {
+  const consents = window.ketchApi.consents;
+  if (consents?.purposes['essential']?.status === 'granted') {
+    console.log('Essential consent granted');
+    loadCustomFunction();
+  } else {
+    console.log('Essential consent NOT granted');
+  }
+}
 
 function loadCustomFunction() {
   console.log("Custom function called - Essential consent granted!");
-  // Load Google Analytics here
+  // Your GA or other tracking code here
 }
+
+// Start checking
+waitForKetchApi();
 </script>
+
 
 
 </head>
