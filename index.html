@@ -12,7 +12,7 @@
     console.log('Ketch is ready');
 
     const consents = window.ketchApi?.consents;
-    if (consents?.purposes['analytics']?.status === 'granted') {
+    if (consents?.purposes['essential']?.status === 'granted') {
       loadGoogleAnalytics();
     }
   });
@@ -29,6 +29,6 @@
 
 </head>
 <body>
-  <h1>Welcome! 3</h1>
+  <h1>Welcome! 4</h1>
 </body>
 </html>
