@@ -21,34 +21,20 @@
 
   <!-- Custom logic triggered after consent -->
   <script>
-    function waitForKetch(callback) {
-      const interval = setInterval(() => {
-        if (typeof window.ketch === 'object' && typeof window.ketch.onConsent === 'function') {
-          clearInterval(interval);
-          callback(window.ketch);
-        }
-      }, 100);
+  ketch.then(function(api) {
+    if (api.consents.purposes['analytics']?.status === 'granted') {
+      // Load Google Analytics script
+      loadGoogleAnalytics();
     }
-
-    waitForKetch((ketch) => {
-      ketch.onConsent((consent) => {
-        if (consent?.purposes?.analytics === 'consented') {
-          console.log('✅ User gave consent for analytics');
-          // Run your custom logic
-          myCustomFunction();
-        }
-      });
-    });
-
-    function myCustomFunction() {
-      console.log('🎉 Custom code executed after user consented!');
-      // 👉 Place your actual logic here
-      // e.g., show a feature, enable a script, start a timer, etc.
-    }
+  });
+   
+  function loadGoogleAnalytics() {
+console.log("Testing")
+  }
   </script>
 
 </head>
 <body>
-  <h1>Welcome! 3</h1>
+  <h1>Welcome! 4</h1>
 </body>
 </html>
