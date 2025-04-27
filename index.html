@@ -7,30 +7,28 @@
   <!-- Your Ketch boot script (unchanged) -->
 <script>!function(){window.semaphore=window.semaphore||[],window.ketch=function(){window.semaphore.push(arguments)};var e=document.createElement("script");e.type="text/javascript",e.src="https://global.ketchcdn.com/web/v3/config/merkle/website_smart_tag/boot.js",e.defer=e.async=!0,document.getElementsByTagName("head")[0].appendChild(e)}();</script>
 <script>
-(function waitForKetchAndListen() {
-  if (typeof window.ketchApi !== 'undefined') {
-    // ketchApi is ready
-    const consents = window.ketchApi.consents;
+  // Listen for Ketch ready event
+  window.addEventListener('ketchReady', function () {
+    console.log('Ketch is ready');
+
+    const consents = window.ketchApi?.consents;
     if (consents?.purposes['analytics']?.status === 'granted') {
       loadGoogleAnalytics();
     }
-  } else {
-    // ketchApi not ready yet, check again shortly
-    setTimeout(waitForKetchAndListen, 50); // retry every 50ms
-  }
-})();
+  });
 
-function loadGoogleAnalytics() {
-  console.log("Testing");
-  // Insert actual GA loading script here
-}
+  function loadGoogleAnalytics() {
+    console.log("Testing - Google Analytics loading now");
+    // Insert actual GA tracking script dynamically here
+  }
 </script>
+
 
 
 
 
 </head>
 <body>
-  <h1>Welcome! 2</h1>
+  <h1>Welcome! 3</h1>
 </body>
 </html>
