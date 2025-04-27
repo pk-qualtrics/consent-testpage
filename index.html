@@ -9,24 +9,24 @@
 
 <script>
 (function waitForKetchAndListen() {
-  if (typeof window.ketch !== 'undefined') {
-    // Ketch is ready
-    window.ketch.command('getConsents').then(function(api) {
-      if (api.consents.purposes['analytics']?.status === 'granted') {
-        loadGoogleAnalytics();
-      }
-    });
+  if (typeof window.ketchApi !== 'undefined') {
+    // ketchApi is ready
+    const consents = window.ketchApi.consents;
+    if (consents?.purposes['analytics']?.status === 'granted') {
+      loadGoogleAnalytics();
+    }
   } else {
-    // Ketch not ready yet, check again shortly
+    // ketchApi not ready yet, check again shortly
     setTimeout(waitForKetchAndListen, 50); // retry every 50ms
   }
 })();
 
 function loadGoogleAnalytics() {
   console.log("Testing");
-  // Insert actual Google Analytics loading script here
+  // Insert actual GA loading script here
 }
 </script>
+
 
 
 
