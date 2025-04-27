@@ -7,22 +7,23 @@
   <!-- Your Ketch boot script (unchanged) -->
 <script>!function(){window.semaphore=window.semaphore||[],window.ketch=function(){window.semaphore.push(arguments)};var e=new URLSearchParams(document.location.search),n=document.createElement("script");n.type="text/javascript", n.src="https://global.ketchcdn.com/web/v2/config/merkle/website_smart_tag/boot.js", n.defer=n.async=!0,document.getElementsByTagName("head")[0].appendChild(n)}();</script>
 
-  <!-- Custom logic triggered after consent -->
-  <script>
-  ketch.then(function(api) {
+<script>
+  ketch.on('consent', function(api) {
     if (api.consents.purposes['analytics']?.status === 'granted') {
       // Load Google Analytics script
       loadGoogleAnalytics();
     }
   });
-   
+
   function loadGoogleAnalytics() {
-console.log("Testing")
+    console.log("Testing");
+    // Insert Google Analytics loading code here
   }
-  </script>
+</script>
+
 
 </head>
 <body>
-  <h1>Welcome! 4</h1>
+  <h1>Welcome! 5</h1>
 </body>
 </html>
