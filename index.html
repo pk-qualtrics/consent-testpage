@@ -6,19 +6,26 @@
 
   <!-- Your Ketch boot script (unchanged) -->
 <script>!function(){window.semaphore=window.semaphore||[],window.ketch=function(){window.semaphore.push(arguments)};var e=document.createElement("script");e.type="text/javascript",e.src="https://global.ketchcdn.com/web/v3/config/merkle/website_smart_tag/boot.js",e.defer=e.async=!0,document.getElementsByTagName("head")[0].appendChild(e)}();</script>
-<script>
-  // Listen for Ketch ready event
+
+  <script>
+  console.log('Adding ketchReady event listener');
+
   window.addEventListener('ketchReady', function () {
-    console.log('Ketch is ready');
+    console.log('Ketch is ready (event received)');
 
     const consents = window.ketchApi?.consents;
+    console.log('Ketch consents:', consents);
+
     if (consents?.purposes['essential']?.status === 'granted') {
+      console.log('Essential consent granted');
       loadGoogleAnalytics();
+    } else {
+      console.log('Essential consent NOT granted');
     }
   });
 
   function loadGoogleAnalytics() {
-    console.log("Testing - Google Analytics loading now");
+    console.log("Testing - Google Analytics loading now (Essential consent granted)");
     // Insert actual GA tracking script dynamically here
   }
 </script>
@@ -27,8 +34,9 @@
 
 
 
+
 </head>
 <body>
-  <h1>Welcome! 4</h1>
+  <h1>Welcome! 5</h1>
 </body>
 </html>
